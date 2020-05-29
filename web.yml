@@ -1,0 +1,33 @@
+---
+-hosts: web
+ tasks
+   - name: Installing git
+     apt: pkg=git state=latest update_cache=yes
+
+   - name: Getting index.html from exam git
+     shell: git clone https://github.com/torquetdnepr/exam 
+
+   - name: Installing web on Docker2
+     apt: pkg=apache2 state=latest update_cache=yes
+
+   - name: Deact def site
+     shell: a2dissite 000-default.conf
+
+   - name: Removing def site
+     file: src=/etc/apache2/sites-available/000-default.conf state=absent
+     igonore_errors: true
+
+   - name: mkdir site
+     shell: mkdir /ver/www/html/site
+
+   - name: Copy index.html to /var/www/html/site
+     copy: src=/root/exam/index.html dest=/var/www/html/site
+   
+   - name: Copy fully worked config to sites-available
+     copy: src=/root/exam/site.conf dest=/etc/apache2/sites-available/
+
+   - name: Activate site
+     shell: a2ensite site.conf
+
+   - name: Restart apache2
+     shell: service apache2 restart

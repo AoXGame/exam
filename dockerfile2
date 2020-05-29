@@ -1,0 +1,15 @@
+FROM ubuntu:latest
+
+MAINTAINER admin.got
+COPY index.html /var/www/html/site
+ENV DEBIAN_FRONTEND=noninteractive
+COPY
+
+RUN	apt-get update && \
+	apt-get upgrade -y && \
+	apt-get install -y apache2 && \
+	service apache2 restart
+
+EXPOSE 80/tcp 81/tcp
+
+CMD ["apache2ctl", "-D", "FOREGROUND"]
