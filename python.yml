@@ -1,11 +1,17 @@
 ---
- - hosts: python
-   tasks:
-     - name: Install python3
-       apt: pkg=python3 state=latest update_cache=yes
-
-     - name: Copy python
-       copy: src=/root/exam/server.py dest=/etc/python
-
-     - name: Run python script
-       shell: python /etc/python/server.py/ ./
+- hosts: remot
+  tasks:
+    - name:Install python3
+      apt:pkg=python3 state=latest update_cache=yes
+    - name:Install docker
+      apt:pkg=docker.io state=latest update_cache=yes'
+    - name:Creating container for python WebSocket
+      docker_container:	
+        name:python
+        image:ubuntu:latest
+    - name:Installing Pip3 WebSocket
+      apt:pkg=pip3-install-websocket state=latest update_cache=yes
+    - name:Copy python
+      copy:src=/root/exam/server.py dest=/etc/python
+    - name:Run python script
+      shell:python /etc/python/server.py/ ./
